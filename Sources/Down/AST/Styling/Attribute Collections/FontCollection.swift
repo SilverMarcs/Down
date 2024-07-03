@@ -29,7 +29,8 @@ public protocol FontCollection {
     var heading5: DownFont { get }
     var heading6: DownFont { get }
     var body: DownFont { get }
-    var code: DownFont { get }
+    var inlineCode: DownFont { get }
+    var codeBlock: DownFont { get }
     var listItemPrefix: DownFont { get }
 
 }
@@ -45,7 +46,8 @@ public struct StaticFontCollection: FontCollection {
     public var heading5: DownFont
     public var heading6: DownFont
     public var body: DownFont
-    public var code: DownFont
+    public var inlineCode: DownFont
+    public var codeBlock: DownFont
     public var listItemPrefix: DownFont
 
     // MARK: - Life cycle
@@ -58,7 +60,8 @@ public struct StaticFontCollection: FontCollection {
         heading5: DownFont = .boldSystemFont(ofSize: 20),
         heading6: DownFont = .boldSystemFont(ofSize: 20),
         body: DownFont = .systemFont(ofSize: 17),
-        code: DownFont = DownFont(name: "menlo", size: 17) ?? .systemFont(ofSize: 17),
+        codeBlock: DownFont = DownFont(name: "menlo", size: 17) ?? .systemFont(ofSize: 17),
+        inlineCode: DownFont = DownFont(name: "menlo", size: 15) ?? .systemFont(ofSize: 15),
         listItemPrefix: DownFont = DownFont.monospacedDigitSystemFont(ofSize: 17, weight: .regular)
     ) {
         self.heading1 = heading1
@@ -68,7 +71,8 @@ public struct StaticFontCollection: FontCollection {
         self.heading5 = heading5
         self.heading6 = heading6
         self.body = body
-        self.code = code
+        self.inlineCode = codeBlock
+        self.codeBlock = codeBlock
         self.listItemPrefix = listItemPrefix
     }
 

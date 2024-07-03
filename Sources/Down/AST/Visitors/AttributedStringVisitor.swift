@@ -89,7 +89,8 @@ extension AttributedStringVisitor: Visitor {
 
     public func visit(codeBlock node: CodeBlock) -> NSMutableAttributedString {
         guard let literal = node.literal else { return .empty }
-        let result = literal.replacingNewlinesWithLineSeparators().attributed
+
+        let result = literal.attributed
         if node.hasSuccessor { result.append(.paragraphSeparator) }
         styler.style(codeBlock: result, fenceInfo: node.fenceInfo)
         return result
@@ -231,7 +232,8 @@ private extension String {
     // This code point allows line breaking, without starting a new paragraph.
 
     static var lineSeparator: String {
-        return "\u{2028}"
+//        return "\u{2028}"
+        return "\u{000A}" // \n
     }
 
     static var zeroWidthSpace: String {
