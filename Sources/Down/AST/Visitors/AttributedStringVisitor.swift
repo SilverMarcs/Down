@@ -44,9 +44,105 @@ public class AttributedStringVisitor {
 
 }
 
+@available(macOS 12, *)
+public struct DownParserResult: Identifiable {
+    public let id = UUID()
+    public let attributedString: AttributedString
+    public let isCodeBlock: Bool
+    public let codeBlockLanguage: String?
+}
+
 extension AttributedStringVisitor: Visitor {
 
     public typealias Result = NSMutableAttributedString
+    
+    @available(macOS 12, *)
+    public func getParsedResult(from document: Document) -> [DownParserResult] {
+        var results: [DownParserResult] = []
+        var currentNonCodeBlock = NSMutableAttributedString()
+        
+        func appendCurrentNonCodeBlock() {
+            if currentNonCodeBlock.length > 0 {
+                results.append(DownParserResult(
+                    attributedString: AttributedString(currentNonCodeBlock),
+                    isCodeBlock: false,
+                    codeBlockLanguage: nil
+                ))
+                currentNonCodeBlock = NSMutableAttributedString()
+            }
+        }
+        
+        for child in document.children {
+            if let codeBlock = child as? CodeBlock {
+                // Append any accumulated non-code block content
+                appendCurrentNonCodeBlock()
+                
+                // Process the code block
+                let codeBlockContent = visit(codeBlock: codeBlock)
+                results.append(DownParserResult(
+                    attributedString: AttributedString(codeBlockContent),
+                    isCodeBlock: true,
+                    codeBlockLanguage: codeBlock.fenceInfo
+                ))
+            } else {
+                // For non-code blocks, accumulate the content
+                currentNonCodeBlock.append(visit(node: child))
+            }
+        }
+        
+        // Append any remaining non-code block content
+        appendCurrentNonCodeBlock()
+        
+        return results
+    }
+    
+    public func visit(node: Node) -> NSMutableAttributedString {
+        switch node {
+        case let document as Document:
+            return visit(document: document)
+        case let blockQuote as BlockQuote:
+            return visit(blockQuote: blockQuote)
+        case let list as List:
+            return visit(list: list)
+        case let item as Item:
+            return visit(item: item)
+        case let codeBlock as CodeBlock:
+            return visit(codeBlock: codeBlock)
+        case let htmlBlock as HtmlBlock:
+            return visit(htmlBlock: htmlBlock)
+        case let customBlock as CustomBlock:
+            return visit(customBlock: customBlock)
+        case let paragraph as Paragraph:
+            return visit(paragraph: paragraph)
+        case let heading as Heading:
+            return visit(heading: heading)
+        case let thematicBreak as ThematicBreak:
+            return visit(thematicBreak: thematicBreak)
+        case let text as Text:
+            return visit(text: text)
+        case let softBreak as SoftBreak:
+            return visit(softBreak: softBreak)
+        case let lineBreak as LineBreak:
+            return visit(lineBreak: lineBreak)
+        case let code as Code:
+            return visit(code: code)
+        case let htmlInline as HtmlInline:
+            return visit(htmlInline: htmlInline)
+        case let customInline as CustomInline:
+            return visit(customInline: customInline)
+        case let emphasis as Emphasis:
+            return visit(emphasis: emphasis)
+        case let strong as Strong:
+            return visit(strong: strong)
+        case let link as Link:
+            return visit(link: link)
+        case let image as Image:
+            return visit(image: image)
+        default:
+            // Handle any unexpected node types
+            return NSMutableAttributedString()
+        }
+    }
 
     public func visit(document node: Document) -> NSMutableAttributedString {
         let result = visitChildren(of: node).joined
@@ -91,7 +187,7 @@ extension AttributedStringVisitor: Visitor {
         guard let literal = node.literal else { return .empty }
 
         let result = literal.attributed
-        if node.hasSuccessor { result.append(.paragraphSeparator) }
+//        if node.hasSuccessor { result.append(.paragraphSeparator) }
         styler.style(codeBlock: result, fenceInfo: node.fenceInfo)
         return result
     }

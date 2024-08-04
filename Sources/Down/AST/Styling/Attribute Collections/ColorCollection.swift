@@ -61,14 +61,14 @@ public struct StaticColorCollection: ColorCollection {
     // MARK: - Life cycle
 
     public init(
-        heading1: DownColor = .black,
-        heading2: DownColor = .black,
-        heading3: DownColor = .black,
-        heading4: DownColor = .black,
-        heading5: DownColor = .black,
-        heading6: DownColor = .black,
-        body: DownColor = .black,
-        code: DownColor = .black,
+        heading1: DownColor = DownColor.textColor,
+        heading2: DownColor = DownColor.textColor,
+        heading3: DownColor = DownColor.textColor,
+        heading4: DownColor = DownColor.textColor,
+        heading5: DownColor = DownColor.textColor,
+        heading6: DownColor = DownColor.textColor,
+        body: DownColor = DownColor.textColor,
+        code: DownColor = DownColor.textColor,
         link: DownColor = .blue,
         quote: DownColor = .darkGray,
         quoteStripe: DownColor = .darkGray,

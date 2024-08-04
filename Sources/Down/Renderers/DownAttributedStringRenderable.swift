@@ -67,6 +67,14 @@ extension DownAttributedStringRenderable {
         let visitor = AttributedStringVisitor(styler: styler, options: options)
         return document.accept(visitor)
     }
+    
+    @available(macOS 12, *)
+    public func toParserResult(_ options: DownOptions = .default, styler: Styler) throws -> [DownParserResult] {
+        let document = try self.toDocument(options)
+        let visitor = AttributedStringVisitor(styler: styler, options: options)
+        let parsed = visitor.getParsedResult(from: document)
+        return parsed
+    }
 
 }
 

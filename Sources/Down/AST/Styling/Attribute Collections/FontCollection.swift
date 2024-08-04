@@ -53,16 +53,16 @@ public struct StaticFontCollection: FontCollection {
     // MARK: - Life cycle
 
     public init(
-        heading1: DownFont = .boldSystemFont(ofSize: 28),
-        heading2: DownFont = .boldSystemFont(ofSize: 24),
-        heading3: DownFont = .boldSystemFont(ofSize: 20),
-        heading4: DownFont = .boldSystemFont(ofSize: 20),
-        heading5: DownFont = .boldSystemFont(ofSize: 20),
-        heading6: DownFont = .boldSystemFont(ofSize: 20),
-        body: DownFont = .systemFont(ofSize: 17),
-        codeBlock: DownFont = DownFont(name: "menlo", size: 17) ?? .systemFont(ofSize: 17),
-        inlineCode: DownFont = DownFont(name: "menlo", size: 15) ?? .systemFont(ofSize: 15),
-        listItemPrefix: DownFont = DownFont.monospacedDigitSystemFont(ofSize: 17, weight: .regular)
+        heading1: DownFont = .boldSystemFont(ofSize: 24),
+        heading2: DownFont = .boldSystemFont(ofSize: 20),
+        heading3: DownFont = .boldSystemFont(ofSize: 16),
+        heading4: DownFont = .boldSystemFont(ofSize: 16),
+        heading5: DownFont = .boldSystemFont(ofSize: 16),
+        heading6: DownFont = .boldSystemFont(ofSize: 16),
+        body: DownFont = .systemFont(ofSize: 13),
+        codeBlock: DownFont = DownFont(name: "menlo", size: 13) ?? .systemFont(ofSize: 13),
+        inlineCode: DownFont = DownFont(name: "menlo", size: 13) ?? .systemFont(ofSize: 13),
+        listItemPrefix: DownFont = DownFont.monospacedDigitSystemFont(ofSize: 13, weight: .regular)
     ) {
         self.heading1 = heading1
         self.heading2 = heading2
